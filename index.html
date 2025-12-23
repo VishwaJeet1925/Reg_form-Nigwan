@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Form</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="form-wrapper">
+            <h1>Registration Form</h1>
+            
+            <form id="registrationForm" class="registration-form">
+                <!-- Full Name -->
+                <div class="form-group">
+                    <label for="fullName">Full Name <span class="required">*</span></label>
+                    <input 
+                        type="text" 
+                        id="fullName" 
+                        name="fullName" 
+                        placeholder="Enter your full name"
+                        required
+                    >
+                    <span class="error-message" id="fullNameError"></span>
+                </div>
+
+                <!-- Address -->
+                <div class="form-group">
+                    <label for="address">Address <span class="required">*</span></label>
+                    <textarea 
+                        id="address" 
+                        name="address" 
+                        placeholder="Enter your address"
+                        rows="3"
+                        required
+                    ></textarea>
+                    <span class="error-message" id="addressError"></span>
+                </div>
+
+                <!-- Mobile Number -->
+                <div class="form-group">
+                    <label for="mobile">Mobile Number <span class="required">*</span></label>
+                    <input 
+                        type="tel" 
+                        id="mobile" 
+                        name="mobile" 
+                        placeholder="Enter 10-digit mobile number"
+                        required
+                    >
+                    <span class="error-message" id="mobileError"></span>
+                </div>
+
+                <!-- Email -->
+                <div class="form-group">
+                    <label for="email">Email ID <span class="required">*</span></label>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        name="email" 
+                        placeholder="Enter your email"
+                        required
+                    >
+                    <span class="error-message" id="emailError"></span>
+                </div>
+
+                <!-- Gender -->
+                <div class="form-group">
+                    <label>Gender <span class="required">*</span></label>
+                    <div class="radio-group">
+                        <label class="radio-label">
+                            <input type="radio" name="gender" value="Male" required>
+                            <span>Male</span>
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="gender" value="Female" required>
+                            <span>Female</span>
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="gender" value="Others" required>
+                            <span>Others</span>
+                        </label>
+                    </div>
+                    <span class="error-message" id="genderError"></span>
+                </div>
+
+                <!-- Date of Birth -->
+                <div class="form-group">
+                    <label for="dobDisplay">Date of Birth <span class="required">*</span></label>
+                    <div class="date-picker-wrapper">
+                        <input 
+                            type="text" 
+                            id="dobDisplay" 
+                            placeholder="Select your date of birth"
+                            readonly
+                            required
+                        >
+                        <div class="custom-date-picker" id="customDatePicker">
+                            <div class="date-picker-header">
+                                <button type="button" class="nav-btn prev-month" id="prevMonthBtn">‹</button>
+                                <div class="month-year-display" id="monthYearDisplay">
+                                    <span id="currentMonthYear"></span>
+                                </div>
+                                <button type="button" class="nav-btn next-month" id="nextMonthBtn" disabled>›</button>
+                            </div>
+                            <div class="month-year-selector">
+                                <button type="button" class="month-btn" id="monthBtn">Month</button>
+                                <button type="button" class="year-btn" id="yearBtn">Year</button>
+                            </div>
+                            <div class="calendar-grid" id="calendarGrid"></div>
+                        </div>
+                        <div class="month-selector" id="monthSelector" style="display: none;">
+                            <div class="selector-header">
+                                <h3>Select Month</h3>
+                                <button type="button" class="close-selector" id="closeMonthSelector">×</button>
+                            </div>
+                            <div class="selector-grid" id="monthGrid"></div>
+                        </div>
+                        <div class="year-selector" id="yearSelector" style="display: none;">
+                            <div class="selector-header">
+                                <button type="button" class="nav-btn" id="prevYearRange">‹</button>
+                                <h3 id="yearRangeLabel"></h3>
+                                <button type="button" class="nav-btn" id="nextYearRange">›</button>
+                            </div>
+                            <div class="selector-grid" id="yearGrid"></div>
+                        </div>
+                    </div>
+                    <span class="error-message" id="dobError"></span>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" id="submitBtn" class="submit-btn" disabled>
+                    Submit
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Preview Modal -->
+    <div id="previewModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Preview Your Details</h2>
+                <button type="button" class="close-btn" id="closeModal">&times;</button>
+            </div>
+            <div class="modal-body" id="previewContent"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn-cancel" id="editBtn">Edit</button>
+                <button type="button" class="btn-confirm" id="confirmBtn">Confirm & Submit</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div id="successModal" class="modal">
+        <div class="modal-content modal-success">
+            <div class="success-icon">✓</div>
+            <h2>Registration Successful!</h2>
+            <p id="successMessage"></p>
+            <button type="button" class="btn-confirm" id="newFormBtn">Create New Registration</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

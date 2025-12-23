@@ -1,0 +1,796 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f5f5f5;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    overflow-x: hidden;
+}
+
+.container {
+    width: 100%;
+    max-width: 600px;
+}
+
+.form-wrapper {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    padding: 40px;
+    overflow: visible;
+    position: relative;
+}
+
+h1 {
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 28px;
+}
+
+.registration-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+label {
+    color: #333;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.required {
+    color: #e74c3c;
+}
+
+input[type="text"],
+input[type="tel"],
+input[type="email"],
+input[type="date"],
+textarea {
+    padding: 10px;
+    border: 2px solid #e0e0e0;
+    border-radius: 6px;
+    font-size: 14px;
+    font-family: inherit;
+    transition: all 0.3s ease;
+}
+
+input[type="text"]:focus,
+input[type="tel"]:focus,
+input[type="email"]:focus,
+input[type="date"]:focus,
+textarea:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+textarea {
+    resize: vertical;
+    min-height: 60px;
+}
+
+/* Custom Date Picker */
+.date-picker-wrapper {
+    position: relative;
+    z-index: 100;
+}
+
+#dobDisplay {
+    padding: 12px;
+    border: 2px solid #e0e0e0;
+    border-radius: 6px;
+    font-size: 14px;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: white;
+}
+
+#dobDisplay:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+#dobDisplay.error {
+    border-color: #e74c3c;
+    background-color: #fadbd8;
+}
+
+.custom-date-picker {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: white;
+    border: 2px solid #667eea;
+    border-radius: 6px;
+    padding: 15px;
+    margin-top: 5px;
+    z-index: 1000;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+    min-width: 280px;
+    display: none;
+    max-width: calc(100vw - 30px);
+    box-sizing: border-box;
+}
+
+.custom-date-picker.active {
+    display: block;
+}
+
+.date-picker-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    gap: 10px;
+}
+
+.nav-btn {
+    background: #f0f0f0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.nav-btn:hover:not(:disabled) {
+    background: #667eea;
+    color: white;
+    border-color: #667eea;
+}
+
+.nav-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.month-year-display {
+    flex: 1;
+    text-align: center;
+    font-weight: 600;
+    color: #333;
+    font-size: 16px;
+    padding: 8px;
+}
+
+.month-year-selector {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.month-btn,
+.year-btn {
+    flex: 1;
+    padding: 8px;
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    color: #333;
+    transition: all 0.3s ease;
+}
+
+.month-btn:hover,
+.year-btn:hover {
+    background: #667eea;
+    color: white;
+    border-color: #667eea;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+}
+
+.calendar-grid .day-header {
+    text-align: center;
+    font-weight: 600;
+    color: #667eea;
+    font-size: 12px;
+    padding: 8px 0;
+}
+
+.calendar-grid .date-cell {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: all 0.3s ease;
+    background: white;
+}
+
+.calendar-grid .date-cell:hover:not(.disabled):not(.other-month) {
+    background: #667eea;
+    color: white;
+    border-color: #667eea;
+}
+
+.calendar-grid .date-cell.disabled {
+    color: #ccc;
+    cursor: not-allowed;
+    background: #f9f9f9;
+}
+
+.calendar-grid .date-cell.other-month {
+    color: #ccc;
+    cursor: default;
+}
+
+.calendar-grid .date-cell.selected {
+    background: #667eea;
+    color: white;
+    border-color: #667eea;
+    font-weight: 600;
+}
+
+.calendar-grid .date-cell.today {
+    border: 2px solid #667eea;
+}
+
+/* Month and Year Selectors */
+.month-selector,
+.year-selector {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: white;
+    border: 2px solid #667eea;
+    border-radius: 6px;
+    padding: 15px;
+    margin-top: 5px;
+    z-index: 1001;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+    min-width: 280px;
+    max-width: calc(100vw - 30px);
+    box-sizing: border-box;
+}
+
+.selector-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.selector-header h3 {
+    color: #333;
+    font-size: 16px;
+    margin: 0;
+}
+
+.close-selector {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #999;
+    transition: color 0.3s ease;
+}
+
+.close-selector:hover {
+    color: #333;
+}
+
+.selector-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+}
+
+.selector-grid .selector-item {
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    text-align: center;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    background: white;
+}
+
+.selector-grid .selector-item:hover {
+    background: #667eea;
+    color: white;
+    border-color: #667eea;
+}
+
+.selector-grid .selector-item.selected {
+    background: #667eea;
+    color: white;
+    border-color: #667eea;
+    font-weight: 600;
+}
+
+#yearRangeLabel {
+    color: #333;
+    font-size: 14px;
+    margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .custom-date-picker,
+    .month-selector,
+    .year-selector {
+        min-width: 280px;
+    }
+
+    .selector-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.error-message {
+    color: #e74c3c;
+    font-size: 12px;
+    min-height: 16px;
+    display: block;
+}
+
+.radio-group {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.radio-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.radio-label input[type="radio"] {
+    cursor: pointer;
+    width: 18px;
+    height: 18px;
+    accent-color: #667eea;
+}
+
+.radio-label span {
+    font-weight: 400;
+}
+
+.submit-btn {
+    padding: 14px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+}
+
+.submit-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+}
+
+.submit-btn:disabled {
+    background: #bdc3c7;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.modal.active {
+    display: flex;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    max-width: 500px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.modal-header h2 {
+    color: #333;
+    font-size: 22px;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 28px;
+    cursor: pointer;
+    color: #999;
+    transition: color 0.3s ease;
+}
+
+.close-btn:hover {
+    color: #333;
+}
+
+.modal-body {
+    padding: 20px;
+}
+
+.preview-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.preview-item:last-child {
+    border-bottom: none;
+}
+
+.preview-label {
+    font-weight: 600;
+    color: #555;
+}
+
+.preview-value {
+    color: #333;
+    text-align: right;
+    word-break: break-word;
+}
+
+.modal-footer {
+    display: flex;
+    gap: 10px;
+    padding: 20px;
+    border-top: 1px solid #e0e0e0;
+    justify-content: flex-end;
+}
+
+.btn-cancel,
+.btn-confirm {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-cancel {
+    background: #ecf0f1;
+    color: #333;
+}
+
+.btn-cancel:hover {
+    background: #d5dbdb;
+}
+
+.btn-confirm {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.btn-confirm:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+}
+
+/* Success Modal */
+.modal-success {
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.success-icon {
+    font-size: 60px;
+    color: #27ae60;
+    margin-bottom: 20px;
+}
+
+.modal-success h2 {
+    color: #27ae60;
+    margin-bottom: 10px;
+}
+
+.modal-success p {
+    color: #666;
+    margin-bottom: 30px;
+}
+
+.modal-success .modal-footer {
+    justify-content: center;
+    border-top: none;
+    padding-top: 0;
+}
+
+/* Responsive Design */
+
+/* Desktop (1024px and above) */
+@media (min-width: 1024px) {
+    .container {
+        max-width: 650px;
+    }
+
+    .form-wrapper {
+        padding: 35px;
+    }
+
+    h1 {
+        font-size: 26px;
+        margin-bottom: 18px;
+    }
+
+    .registration-form {
+        gap: 14px;
+    }
+
+    label {
+        font-size: 13px;
+    }
+
+    input[type="text"],
+    input[type="tel"],
+    input[type="email"],
+    input[type="date"],
+    textarea {
+        padding: 9px;
+        font-size: 13px;
+    }
+
+    textarea {
+        min-height: 55px;
+    }
+
+    .custom-date-picker,
+    .month-selector,
+    .year-selector {
+        min-width: 320px;
+    }
+
+    .modal-content {
+        max-width: 550px;
+    }
+
+    .modal-header h2 {
+        font-size: 22px;
+    }
+
+    .radio-group {
+        gap: 16px;
+    }
+}
+
+/* Tablet (768px to 1023px) */
+@media (min-width: 768px) and (max-width: 1023px) {
+    .container {
+        max-width: 600px;
+    }
+
+    .form-wrapper {
+        padding: 28px;
+    }
+
+    h1 {
+        font-size: 22px;
+        margin-bottom: 16px;
+    }
+
+    .registration-form {
+        gap: 13px;
+    }
+
+    label {
+        font-size: 12px;
+    }
+
+    input[type="text"],
+    input[type="tel"],
+    input[type="email"],
+    input[type="date"],
+    textarea {
+        padding: 9px;
+        font-size: 12px;
+    }
+
+    textarea {
+        min-height: 55px;
+    }
+
+    .custom-date-picker,
+    .month-selector,
+    .year-selector {
+        min-width: 280px;
+        max-width: calc(100vw - 30px);
+    }
+
+    .modal-content {
+        max-width: 500px;
+    }
+
+    .modal-header h2 {
+        font-size: 20px;
+    }
+
+    .radio-group {
+        gap: 12px;
+    }
+}
+
+/* Mobile (480px to 767px) */
+@media (max-width: 767px) {
+    body {
+        padding: 15px;
+    }
+
+    .container {
+        max-width: 100%;
+    }
+
+    .form-wrapper {
+        padding: 20px;
+        border-radius: 8px;
+    }
+
+    h1 {
+        font-size: 20px;
+        margin-bottom: 16px;
+    }
+
+    .registration-form {
+        gap: 13px;
+    }
+
+    label {
+        font-size: 12px;
+    }
+
+    input[type="text"],
+    input[type="tel"],
+    input[type="email"],
+    input[type="date"],
+    textarea {
+        padding: 9px;
+        font-size: 14px;
+    }
+
+    textarea {
+        min-height: 55px;
+    }
+
+    .custom-date-picker,
+    .month-selector,
+    .year-selector {
+        min-width: 260px;
+        max-width: calc(100vw - 30px);
+        padding: 12px;
+    }
+
+    .month-year-display {
+        font-size: 14px;
+    }
+
+    .month-btn,
+    .year-btn {
+        font-size: 11px;
+        padding: 6px;
+    }
+
+    .calendar-grid .date-cell {
+        font-size: 11px;
+    }
+
+    .selector-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 5px;
+    }
+
+    .selector-grid .selector-item {
+        padding: 8px;
+        font-size: 11px;
+    }
+
+    .modal-content {
+        max-width: 95%;
+    }
+
+    .modal-header h2 {
+        font-size: 18px;
+    }
+
+    .modal-header {
+        padding: 15px;
+    }
+
+    .modal-body {
+        padding: 15px;
+    }
+
+    .modal-footer {
+        padding: 15px;
+        gap: 6px;
+    }
+
+    .btn-cancel,
+    .btn-confirm {
+        padding: 9px 16px;
+        font-size: 12px;
+        width: 100%;
+    }
+
+    .radio-group {
+        gap: 10px;
+    }
+
+    .submit-btn {
+        padding: 11px;
+        font-size: 14px;
+    }
+
+    .preview-item {
+        flex-direction: column;
+        gap: 4px;
+        padding: 8px 0;
+    }
+
+    .preview-label {
+        font-size: 12px;
+    }
+
+    .preview-value {
+        font-size: 12px;
+        text-align: left;
+    }
+}
